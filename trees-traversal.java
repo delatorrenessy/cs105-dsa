@@ -52,17 +52,17 @@ public class Main {
         BinaryTree tree = new BinaryTree();
 
         /* Constructing a simple fundamental tree:
-                 3
+                 4
                 / \
                2   5
               / \
-             1   f
+             1   3
         */
-        tree.root = new Node(3);
+        tree.root = new Node(4);
         tree.root.left = new Node(2);
         tree.root.right = new Node(5);
         tree.root.left.left = new Node(1);
-        tree.root.left.right = new Node(4);
+        tree.root.left.right = new Node(3);
 
         System.out.print("Preorder Traversal: ");
         tree.printPreorder(tree.root);
