@@ -8,8 +8,27 @@ class Node {
     }
 }
 
-public class Main {
+public class Main
+{
+    Node root;
 
+    // Fundamental Insertion
+    void insert(int data) {
+        root = insertRec(root, data);
+    }
+
+    Node insertRec(Node root, int data) {
+        if (root == null) {
+            return new Node(data);
+        }
+        if (data < root.data) {
+            root.left = insertRec(root.left, data);
+        } else if (data > root.data) {
+            root.right = insertRec(root.right, data);
+        }
+        return root;
+    }
+    
     // 1. Calculate the total height of the tree
     static int getHeight(Node root) {
         if (root == null) return 0;
@@ -37,28 +56,22 @@ public class Main {
         int height = getHeight(root);
         for (int i = 1; i <= height; i++) {
             printLevel(root, i);
-            System.out.println(); 
+            //System.out.println(); 
         }
     }
-
+    
     public static void main(String[] args) {
-        /* Creating sample tree:
-                 4
-               /   \
-              2     5
-             / \
-            1   3
-        */
-        Node root = new Node(4);
-        root.left = new Node(2);
-        root.right = new Node(5);
-        root.left.left = new Node(1);
-        root.left.right = new Node(3);
+        Main bst = new Main();
 
-        System.out.println("Recursive level-order traversal:");
-        levelOrder(root); 
-        // Output: 4 
-        // 2 5
-        // 1 3
+        // Build a basic tree
+        bst.insert(45);
+        bst.insert(25);
+        bst.insert(65);
+        bst.insert(15);
+        bst.insert(35);
+        bst.insert(85);
+
+        System.out.println("BST Level-Order:");
+        Main.levelOrder(bst.root);
     }
 }
