@@ -95,22 +95,26 @@ class AVLTree {
 
         // Case A: Left-Left (LL) Case -> Requires Single Right Rotation
         if (balance > 1 && key < node.left.key) {
+            System.out.println("  ↳ [ROTATION] Single Right (LL) at node " + node.key);
             return rightRotate(node);
         }
 
         // Case B: Right-Right (RR) Case -> Requires Single Left Rotation
         if (balance < -1 && key > node.right.key) {
+            System.out.println("  ↳ [ROTATION] Single Left (RR) at node " + node.key);
             return leftRotate(node);
         }
 
         // Case C: Left-Right (LR) Case -> Requires Double Rotation (Left then Right)
         if (balance > 1 && key > node.left.key) {
+            System.out.println("  ↳ [ROTATION] Double Left-Right (LR) at node " + node.key);
             node.left = leftRotate(node.left);
             return rightRotate(node);
         }
 
         // Case D: Right-Left (RL) Case -> Requires Double Rotation (Right then Left)
         if (balance < -1 && key < node.right.key) {
+            System.out.println("  ↳ [ROTATION] Double Right-Left (RL) at node " + node.key);
             node.right = rightRotate(node.right);
             return leftRotate(node);
         }
@@ -118,21 +122,52 @@ class AVLTree {
         return node; // Return the (unchanged) node pointer
     }
 
-    // Simple utility to print the tree in-order to check correctness
-    public void printInOrder(Node node) {
-        if (node != null) {
-            printInOrder(node.left);
-            System.out.print(node.key + " (H:" + node.height + ") ");
-            printInOrder(node.right);
+    // Level-order traversal function using a custom, zero-import static array queue
+    public void printLevelOrder() {
+        if (root == null) {
+            System.out.println("Tree is empty.");
+            return;
+        }
+
+        // Since the maximum capacity is 8 nodes for our practice arrays, 
+        // a static size of 50 is more than safe.
+        Node[] queue = new Node[50];
+        int head = 0;
+        int tail = 0;
+
+        // Enqueue root
+        queue[tail++] = root;
+
+        while (head < tail) {
+            // Get the number of nodes at the current level
+            int levelSize = tail - head;
+
+            // Process all nodes at this specific height level
+            for (int i = 0; i < levelSize; i++) {
+                Node current = queue[head++];
+                
+                System.out.print(current.key + " ");
+
+                // Enqueue children
+                if (current.left != null) {
+                    queue[tail++] = current.left;
+                }
+                if (current.right != null) {
+                    queue[tail++] = current.right;
+                }
+            }
+            // Print a line break to distinctly separate each tree level
+            System.out.println();
         }
     }
 
     public Node getRoot() {
         return root;
     }
+}
 
-    // Main method to test out practice arrays
-        // Main method to test out an 8-node progressive rotation set
+public class Main {
+    
     public static void main(String[] args) {
         AVLTree tree = new AVLTree();
         
@@ -145,10 +180,8 @@ class AVLTree {
             tree.insert(num);
         }
 
-        System.out.println("\nFinal In-order traversal of the balanced 8-node AVL tree:");
-        System.out.println("(Format: Value (H: Height of node))");
-        tree.printInOrder(tree.getRoot());
-        System.out.println();
+        System.out.println("\nFinal Level-Order traversal of the balanced AVL tree:");
+        System.out.println("(Each line below represents a complete level of your tree structure)");
+        tree.printLevelOrder();
     }
-
 }
